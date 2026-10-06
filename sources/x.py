@@ -20,7 +20,7 @@ async def fetch(client: httpx.AsyncClient, token: str, accounts: list[str]) -> l
             r = await client.get(URL, params={"query": q, "max_results": 100},
                                  headers={"Authorization": f"Bearer {token}"}, timeout=20)
             if r.status_code >= 400:
-                log.warning("X API %s: %s", r.status_code, r.text[:300])
+                log.warning("X API %s: %s", r.status_code, r.text[:800])
                 continue
             out += [("x", t["text"]) for t in r.json().get("data", [])]
         except Exception as e:
