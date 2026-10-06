@@ -1,4 +1,6 @@
 """Free sources: CoinGecko trending, Fear & Greed, news RSS, Reddit."""
+from __future__ import annotations
+
 import logging
 import feedparser
 import httpx

@@ -1,4 +1,6 @@
 """X (Twitter) API v2 recent search. Needs a bearer token; returns [] without one."""
+from __future__ import annotations
+
 import logging
 import httpx
 

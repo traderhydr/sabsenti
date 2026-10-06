@@ -1,4 +1,6 @@
 """Binance USDT-perp universe, klines, EMA/ATR."""
+from __future__ import annotations
+
 import httpx
 
 BASE = "https://fapi.binance.com"

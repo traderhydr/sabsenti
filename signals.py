@@ -1,4 +1,6 @@
 """Turn social sentiment + price confirmation into a trade signal."""
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 import config

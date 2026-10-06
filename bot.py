@@ -1,4 +1,6 @@
 """sabsenti: scan X + web sentiment, confirm with price, post signals to Telegram."""
+from __future__ import annotations
+
 import asyncio
 import json
 import logging

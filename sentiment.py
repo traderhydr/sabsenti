@@ -1,4 +1,6 @@
 """Tiny lexicon sentiment + ticker extraction (no ML deps)."""
+from __future__ import annotations
+
 import re
 from dataclasses import dataclass, field
 
