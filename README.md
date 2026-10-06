@@ -4,6 +4,9 @@ Telegram trade-signal bot. It scans **X (Twitter)**, crypto news RSS and CoinGec
 
 Pipeline: sources → `sentiment.py` (cashtags + lexicon score) → `signals.py` (direction from sentiment, confirmed by trend, vetoed at extreme Fear & Greed) → `telegram.py`.
 
+## Data sources
+X (optional, needs paid API access), CryptoPanic (free key, `CRYPTOPANIC_TOKEN`), news RSS, CoinGecko trending, Fear & Greed. Binance funding rate and open interest are used as confirmation: a signal is skipped when funding shows crowded positioning (`FUNDING_MAX_PCT`), and funding / 6h OI change are shown in the post.
+
 ## Run
 ```bash
 python -m venv .venv && source .venv/bin/activate

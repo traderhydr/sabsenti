@@ -35,3 +35,25 @@ def atr(bars: list[dict], n: int = 14) -> float:
     trs = [max(b["h"] - b["l"], abs(b["h"] - p["c"]), abs(b["l"] - p["c"]))
            for p, b in zip(bars, bars[1:])]
     return sum(trs[-n:]) / n
+
+
+async def derivatives(client, symbol: str) -> dict:
+    """Funding rate (%) and 6h open-interest change (%). Missing values are None."""
+    out = {"funding_pct": None, "oi_change_pct": None}
+    try:
+        r = await client.get(f"{BASE}/fapi/v1/premiumIndex", params={"symbol": symbol}, timeout=20)
+        r.raise_for_status()
+        out["funding_pct"] = float(r.json()["lastFundingRate"]) * 100
+    except Exception:
+        pass
+    try:
+        r = await client.get(f"{BASE}/futures/data/openInterestHist",
+                             params={"symbol": symbol, "period": "1h", "limit": 7}, timeout=20)
+        r.raise_for_status()
+        rows = r.json()
+        first, last = float(rows[0]["sumOpenInterest"]), float(rows[-1]["sumOpenInterest"])
+        if first > 0:
+            out["oi_change_pct"] = (last / first - 1) * 100
+    except Exception:
+        pass
+    return out

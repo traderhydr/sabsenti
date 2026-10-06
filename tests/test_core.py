@@ -39,3 +39,12 @@ def test_skip_weak_buzz():
 def test_short_signal_levels():
     s = signals.build_signal("SOL", Buzz(5, -3.0, {"x"}), _bars(300, -1))
     assert s and s.side == "SHORT" and s.tps[-1] < s.tps[0] < s.entry < s.sl
+
+
+def test_funding_veto_and_display():
+    from sources import cryptopanic
+    assert signals.build_signal("SOL", Buzz(5, 3.0, {"x"}), _bars(100, 1), deriv={"funding_pct": 0.2}) is None
+    s = signals.build_signal("SOL", Buzz(5, 3.0, {"x"}), _bars(100, 1), deriv={"funding_pct": 0.01, "oi_change_pct": 4.2})
+    assert s and "Funding +0.010%" in signals.format_signal(s) and "OI 6h +4.2%" in signals.format_signal(s)
+    items = cryptopanic.to_items([{"title": "ETF approval", "currencies": [{"code": "SOL"}], "votes": {"positive": 5, "negative": 1}}])
+    assert items == [("cryptopanic", "$SOL ETF approval bullish")]
