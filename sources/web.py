@@ -1,4 +1,4 @@
-"""Free sources: CoinGecko trending, Fear & Greed, news RSS, Reddit."""
+"""Free sources: CoinGecko trending, Fear & Greed, news RSS."""
 from __future__ import annotations
 
 import logging
@@ -12,7 +12,6 @@ RSS = [
     "https://cointelegraph.com/rss",
     "https://decrypt.co/feed",
 ]
-SUBS = ["CryptoCurrency", "CryptoMarkets"]
 
 
 async def trending(client) -> list[tuple[str, str]]:
@@ -47,15 +46,3 @@ async def news(client) -> list[tuple[str, str]]:
             log.warning("rss %s failed: %s", url, e)
     return out
 
-
-async def reddit(client) -> list[tuple[str, str]]:
-    out = []
-    for sub in SUBS:
-        try:
-            r = await client.get(f"https://www.reddit.com/r/{sub}/hot.json?limit=50", headers=UA, timeout=20)
-            for p in r.json()["data"]["children"]:
-                d = p["data"]
-                out.append(("reddit", f"{d['title']}. {d.get('selftext', '')[:300]}"))
-        except Exception as e:
-            log.warning("reddit %s failed: %s", sub, e)
-    return out

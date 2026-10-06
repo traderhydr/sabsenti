@@ -36,10 +36,10 @@ async def scan_once(client, state: dict) -> int:
     items, fng = [], None
     results = await asyncio.gather(
         x.fetch(client, config.X_BEARER_TOKEN, config.X_ACCOUNTS),
-        web.trending(client), web.news(client), web.reddit(client), web.fear_greed(client))
-    for r in results[:4]:
+        web.trending(client), web.news(client), web.fear_greed(client))
+    for r in results[:3]:
         items += r
-    fng = results[4]
+    fng = results[3]
     buzz = sentiment.aggregate(items, set(uni))
     log.info("%d items, %d symbols with buzz, fear&greed=%s", len(items), len(buzz), fng)
 
@@ -64,7 +64,7 @@ async def main():
     if not config.TELEGRAM_BOT_TOKEN:
         log.warning("No TELEGRAM_BOT_TOKEN: dry-run mode (signals print to console)")
     state = load_state()
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(follow_redirects=True) as client:
         while True:
             try:
                 await scan_once(client, state)

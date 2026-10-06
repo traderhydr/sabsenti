@@ -1,6 +1,6 @@
 # sabsenti
 
-Telegram trade-signal bot. It scans **X (Twitter)**, crypto news RSS, Reddit and CoinGecko trending for coins people are talking about, scores the sentiment, and only posts a signal when **price action agrees** (EMA20/50 trend on Binance futures 1h candles). Stops and targets are ATR-based.
+Telegram trade-signal bot. It scans **X (Twitter)**, crypto news RSS and CoinGecko trending for coins people are talking about, scores the sentiment, and only posts a signal when **price action agrees** (EMA20/50 trend on Binance futures 1h candles). Stops and targets are ATR-based.
 
 Pipeline: sources → `sentiment.py` (cashtags + lexicon score) → `signals.py` (direction from sentiment, confirmed by trend, vetoed at extreme Fear & Greed) → `telegram.py`.
 
